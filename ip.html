@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy IP</title>
+
+    <style>
+        body, html {
+            height: 30vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        #ip {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #copyButton {
+            padding: 8px 30px;
+            background-color: #8edc8e;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #copySuccessMessage {
+            visibility: hidden;
+            color: #8edc8e;
+        }
+    </style>
+</head>
+<body>
+    <p id="ip"></p>
+    <div id="copySuccessMessage">Copy OK</div>
+    <button id="copyButton">Copy</button>
+
+    <script>
+
+        function getIP(json) {
+            document.getElementById("ip").innerText = json.ip;
+        }
+
+        var script = document.createElement('script');
+        script.src = 'https://api.ipify.org?format=jsonp&callback=getIP';
+        document.head.appendChild(script);
+
+        function copyIP() {
+            var ipElement = document.getElementById("ip");
+            var ipText = ipElement.innerText;
+
+            var textArea = document.createElement("textarea");
+            textArea.value = ipText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+
+            var copySuccessMessage = document.getElementById("copySuccessMessage");
+            copySuccessMessage.style.visibility = "visible";
+
+            setTimeout(function() {
+                copySuccessMessage.style.visibility = "hidden";
+            }, 1500);
+        }
+
+        document.getElementById("copyButton").addEventListener("click", copyIP);
+    </script>
+</body>
+</html>
